@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Антикопия 2.0 — дорожная карта проекта</title>
+<style>
+  :root{
+    --bg:#0b0f1a;
+    --panel:#121a2b;
+    --panel2:#182238;
+    --text:#e8eefc;
+    --muted:#8fa3c8;
+    --accent:#4da3ff;
+    --accent2:#7c5cff;
+    --accent3:#2bd67b;
+    --green:#2bd67b;
+    --red:#ff5c7a;
+    --yellow:#ffc857;
+    --border:#22304d;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  .container{max-width:1200px;margin:0 auto;padding:0 20px}
+
+  /* HERO */
+  header{
+    background:
+      radial-gradient(900px 400px at 80% -10%, rgba(124,92,255,.35), transparent 60%),
+      radial-gradient(700px 300px at 10% 0%, rgba(77,163,255,.25), transparent 60%),
+      var(--bg);
+    padding:80px 0 60px;
+    border-bottom:1px solid var(--border);
+  }
+  .badge{
+    display:inline-block;
+    background:rgba(77,163,255,.12);
+    border:1px solid rgba(77,163,255,.4);
+    color:var(--accent);
+    padding:6px 16px;
+    border-radius:100px;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.5px;
+    margin-bottom:20px;
+  }
+  h1{
+    font-size:clamp(32px,5vw,56px);
+    line-height:1.1;
+    font-weight:800;
+    margin-bottom:18px;
+  }
+  h1 span{color:var(--accent)}
+  .lead{font-size:18px;color:var(--muted);max-width:700px;margin-bottom:30px}
+  .hero-stats{display:flex;gap:16px;flex-wrap:wrap}
+  .hero-stat{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px 22px;
+    min-width:150px;
+  }
+  .hero-stat b{display:block;font-size:24px;color:var(--accent)}
+  .hero-stat small{color:var(--muted);font-size:13px}
+
+  /* SECTIONS */
+  section{padding:70px 0;border-bottom:1px solid var(--border)}
+  h2{font-size:30px;margin-bottom:10px;font-weight:700}
+  .section-sub{color:var(--muted);margin-bottom:36px;max-width:700px}
+
+  /* ROADMAP */
+  .roadmap{position:relative;padding-left:36px}
+  .roadmap::before{
+    content:'';
+    position:absolute;
+    left:9px;top:6px;bottom:6px;
+    width:2px;
+    background:linear-gradient(180deg,var(--accent),var(--accent2));
+  }
+  .step{position:relative;margin-bottom:32px}
+  .step::before{
+    content:'';
+    position:absolute;
+    left:-36px;top:4px;
+    width:20px;height:20px;
+    border-radius:50%;
+    background:var(--bg);
+    border:3px solid var(--accent);
+    box-shadow:0 0 0 4px rgba(77,163,255,.15);
+  }
+  .step.done::before{background:var(--accent);border-color:var(--accent)}
+  .step.active::before{
+    background:var(--accent2);
+    border-color:var(--accent2);
+    box-shadow:0 0 0 4px rgba(124,92,255,.25);
+  }
+  .step .phase{
+    font-size:12px;color:var(--accent);font-weight:700;
+    letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;
+  }
+  .step.active .phase{color:var(--accent2)}
+  .step h3{font-size:19px;margin-bottom:6px}
+  .step p{color:var(--muted);font-size:15px}
+  .step .tag{
+    display:inline-block;
+    font-size:12px;
+    background:var(--panel2);
+    border:1px solid var(--border);
+    color:var(--muted);
+    padding:2px 10px;
+    border-radius:6px;
+    margin-top:8px;
+  }
+  .step.active .tag{
+    background:rgba(124,92,255,.15);
+    border-color:rgba(124,92,255,.5);
+    color:var(--accent2);
+  }
+
+  /* TARIFFS */
+  .tariffs{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:20px;
+  }
+  .tariff{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:26px;
+    display:flex;
+    flex-direction:column;
+    transition:.25s;
+    position:relative;
+    overflow:hidden;
+  }
+  .tariff:hover{transform:translateY(-4px);border-color:var(--accent)}
+  .tariff.popular{border-color:var(--accent2);box-shadow:0 0 0 1px var(--accent2),0 20px 40px -20px rgba(124,92,255,.5)}
+  .tariff .pop-badge{
+    position:absolute;top:14px;right:14px;
+    background:var(--accent2);
+    color:#fff;font-size:11px;font-weight:700;
+    padding:3px 10px;border-radius:100px;
+    text-transform:uppercase;letter-spacing:.5px;
+  }
+  .tariff .t-name{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+  .tariff .price{font-size:30px;font-weight:800;margin-bottom:4px}
+  .tariff .price small{font-size:14px;color:var(--muted);font-weight:400}
+  .tariff .t-desc{font-size:14px;color:var(--muted);margin:10px 0 18px;min-height:42px}
+  .tariff ul{list-style:none;font-size:14px;flex:1}
+  .tariff li{padding:6px 0 6px 24px;position:relative;color:#c9d6ee}
+  .tariff li::before{
+    content:'✓';position:absolute;left:0;color:var(--green);font-weight:700;
+  }
+
+  /* DIAGRAM */
+  .diagram-wrap{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:40px;
+    align-items:center;
+  }
+  .donut-box{display:flex;justify-content:center}
+  .donut{
+    width:280px;height:280px;border-radius:50%;
+    background:conic-gradient(var(--accent) 0 50%, var(--accent2) 50% 100%);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+    box-shadow:0 0 60px -10px rgba(77,163,255,.4);
+  }
+  .donut::after{
+    content:'';
+    position:absolute;inset:70px;
+    background:var(--bg);
+    border-radius:50%;
+  }
+  .donut-center{position:relative;z-index:2;text-align:center}
+  .donut-center b{display:block;font-size:36px;color:var(--accent)}
+  .donut-center small{color:var(--muted);font-size:13px}
+  .legend{display:flex;flex-direction:column;gap:18px}
+  .legend-item{display:flex;gap:14px;align-items:flex-start}
+  .dot{width:16px;height:16px;border-radius:5px;margin-top:4px;flex-shrink:0}
+  .dot.blue{background:var(--accent)}
+  .dot.purple{background:var(--accent2)}
+  .legend-item b{display:block;font-size:16px}
+  .legend-item p{color:var(--muted);font-size:14px}
+
+  /* Сноска под диаграммой */
+  .diagram-note{
+    margin-top:28px;
+    padding:16px 20px;
+    background:rgba(43,214,123,.07);
+    border:1px solid rgba(43,214,123,.35);
+    border-left:4px solid var(--accent3);
+    border-radius:12px;
+    font-size:14px;
+    color:#c9d6ee;
+    max-width:760px;
+  }
+  .diagram-note b{color:var(--accent3)}
+
+  /* CALCULATOR */
+  .calc{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:34px;
+  }
+  .calc-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:22px;
+    margin-bottom:28px;
+  }
+  .field label{display:block;font-size:13px;color:var(--muted);margin-bottom:8px;font-weight:600}
+  .field input,.field select{
+    width:100%;
+    padding:12px 14px;
+    background:var(--panel2);
+    border:1px solid var(--border);
+    border-radius:10px;
+    color:var(--text);
+    font-size:16px;
+    outline:none;
+    transition:.2s;
+    -webkit-appearance:none;
+    appearance:none;
+  }
+  .field select{
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%238fa3c8' d='M6 8L0 0h12z'/></svg>");
+    background-repeat:no-repeat;
+    background-position:right 14px center;
+    padding-right:38px;
+  }
+  .field input:focus,.field select:focus{border-color:var(--accent)}
+  .results{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:16px;
+  }
+  .res-card{
+    background:linear-gradient(160deg,var(--panel2),var(--panel));
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:20px;
+  }
+  .res-card small{color:var(--muted);font-size:13px;display:block;margin-bottom:6px}
+  .res-card b{font-size:26px;font-weight:800;word-break:break-word}
+  .res-card.green b{color:var(--green)}
+  .res-card.blue b{color:var(--accent)}
+  .res-card.purple b{color:var(--accent2)}
+  .res-card.yellow b{color:var(--yellow)}
+  .res-note{font-size:12px;color:var(--muted);margin-top:6px}
+  .total-bar{
+    margin-top:24px;
+    padding:20px;
+    background:linear-gradient(90deg,rgba(77,163,255,.12),rgba(124,92,255,.12));
+    border:1px solid var(--border);
+    border-radius:14px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:14px;
+  }
+  .total-bar span{color:var(--muted)}
+  .total-bar b{font-size:32px;font-weight:800;color:var(--accent);word-break:break-word}
+
+  .static-note{
+    font-size:13px;
+    color:var(--muted);
+    margin-top:14px;
+    padding:12px 16px;
+    background:rgba(77,163,255,.06);
+    border:1px dashed var(--border);
+    border-radius:10px;
+  }
+
+  /* FOOTER */
+  footer{padding:40px 0;text-align:center;color:var(--muted);font-size:14px}
+
+  @media(max-width:820px){
+    section{padding:50px 0}
+    h2{font-size:24px}
+    .diagram-wrap{grid-template-columns:1fr;gap:28px}
+    .donut{width:220px;height:220px}
+    .donut::after{inset:55px}
+    .calc{padding:22px}
+    .calc-grid{grid-template-columns:1fr;gap:18px}
+    .total-bar b{font-size:26px}
+    .res-card b{font-size:22px}
+    .hero-stats{gap:10px}
+    .hero-stat{flex:1 1 calc(50% - 10px);min-width:0;padding:12px 16px}
+  }
+  @media(max-width:480px){
+    .container{padding:0 14px}
+    header{padding:50px 0 40px}
+    .hero-stat b{font-size:20px}
+    .tariff{padding:20px}
+    .tariff .price{font-size:24px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="badge">ДОРОЖНАЯ КАРТА · 2026</div>
+    <h1>Антикопия <span>2.0</span></h1>
+    <p class="lead">
+      Система поиска и уничтожения пиратских ссылок. Находим, фиксируем, отправляем
+      требования об удалении и добиваемся блокировки нелегального контента — от одной книги
+      до целых библиотек.
+    </p>
+    <div class="hero-stats">
+      <div class="hero-stat"><b>Готов</b><small>продукт разработан</small></div>
+      <div class="hero-stat"><b>50%</b><small>партнёру «Старградд»</small></div>
+      <div class="hero-stat"><b>~150 ₽</b><small>за уничтожение ссылки</small></div>
+      <div class="hero-stat"><b>Q4 2026</b><small>запуск триала и «Поиск+»</small></div>
+    </div>
+  </div>
+</header>
+
+<!-- ROADMAP -->
+<section>
+  <div class="container">
+    <h2>Дорожная карта</h2>
+    <p class="section-sub">Продукт уже готов. В Q4 2026 запускаются первые тарифы, дальше — развитие остальных.</p>
+    <div class="roadmap">
+      <div class="step done">
+        <div class="phase">Этап 1 · Завершён</div>
+        <h3>Разработка продукта</h3>
+        <p>Ядро системы готово: парсер поисковой выдачи, база пиратских ссылок, модуль автоматических жалоб (DMCA / Роскомнадзор), интеграция с программой LinkRepear.</p>
+        <span class="tag">Готово</span>
+      </div>
+      <div class="step active">
+        <div class="phase">Этап 2 · Q4 2026</div>
+        <h3>Запуск тарифов «Триал» и «Поиск+»</h3>
+        <p>Старт продаж: бесплатный суточный триал без ограничений и подписка «Поиск+» за 2 000 ₽/мес с оплатой ~150 ₽ за уничтожение ссылки. Первые клиенты и обратная связь.</p>
+        <span class="tag">Запуск</span>
+      </div>
+      <div class="step">
+        <div class="phase">Этап 3 · 2027</div>
+        <h3>Развитие тарифа «Под ключ»</h3>
+        <p>Масштабирование услуги полного сопровождения через LinkRepear: 85 000 ₽/год за первую книгу, 30 000 ₽ за каждую следующую. Рост базы книг на обслуживании.</p>
+        <span class="tag">Развитие</span>
+      </div>
+      <div class="step">
+        <div class="phase">Этап 4 · 2027</div>
+        <h3>Партнёрский тариф и B2B</h3>
+        <p>Выход на компании, юрлиц и бизнес: пакеты 200 000 – 500 000 ₽/год. Договор с компанией «Старградд» — распределение 50% выручки.</p>
+        <span class="tag">Масштаб</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH LITERATURE -->
+<section>
+  <div class="container">
+    <h2>Уклон в техническую литературу</h2>
+    <p class="section-sub">
+      Приоритет проекта — защита технической и профессиональной литературы. Именно здесь
+      пиратство наносит наибольший ущерб, а защита требует отдельного подхода.
+    </p>
+    <div class="tariffs">
+      <div class="tariff">
+        <div class="t-name">Почему техлитература</div>
+        <div class="t-desc">Высокая цена, узкая аудитория, быстрое распространение файлов.</div>
+        <ul>
+          <li>Книги по программированию и инженерии</li>
+          <li>Медицина, математика, точные науки</li>
+          <li>Учебники и профессиональные руководства</li>
+          <li>Дорогие зарубежные издания</li>
+        </ul>
+      </div>
+      <div class="tariff">
+        <div class="t-name">Как защищаем</div>
+        <div class="t-desc">Комбинированный подход: технология + юридическое давление.</div>
+        <ul>
+          <li>Мониторинг специализированных площадок</li>
+          <li>Приоритетная обработка техкниг</li>
+          <li>Жалобы DMCA и в Роскомнадзор</li>
+          <li>Работа с издательствами и вузами</li>
+        </ul>
+      </div>
+      <div class="tariff">
+        <div class="t-name">Результат</div>
+        <div class="t-desc">Снижение пиратского трафика и защита разработок правообладателя.</div>
+        <ul>
+          <li>Меньше нелегальных копий в выдаче</li>
+          <li>Рост легальных продаж</li>
+          <li>Защита интеллектуальной собственности</li>
+          <li>Прозрачная отчётность правообладателю</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TARIFFS -->
+<section>
+  <div class="container">
+    <h2>Тарифы</h2>
+    <p class="section-sub">Четыре модели: от бесплатного теста до полного сопровождения под ключ.</p>
+    <div class="tariffs">
+
+      <div class="tariff">
+        <div class="t-name">Триал</div>
+        <div class="price">0 ₽ <small>/ сутки</small></div>
+        <div class="t-desc">Попробовать систему без ограничений 24 часа.</div>
+        <ul>
+          <li>Без ограничений на сутки</li>
+          <li>Поиск пиратских ссылок</li>
+          <li>Отправка жалоб</li>
+          <li>Отчёт об уничтожении</li>
+        </ul>
+      </div>
+
+      <div class="tariff popular">
+        <div class="pop-badge">Хит</div>
+        <div class="t-name">Поиск+</div>
+        <div class="price">2 000 ₽ <small>/ месяц</small></div>
+        <div class="t-desc">Безлимитный поиск и уничтожение ссылок с оплатой за каждую.</div>
+        <ul>
+          <li>Без ограничений по функциям</li>
+          <li>Уничтожение ссылки — ~150 ₽</li>
+          <li>Приоритетная поддержка</li>
+          <li>Ежемесячная отчётность</li>
+        </ul>
+      </div>
+
+      <div class="tariff">
+        <div class="t-name">Партнёрский</div>
+        <div class="price">200 000 – 500 000 ₽ <small>/ год</small></div>
+        <div class="t-desc">Для компаний, юрлиц и бизнеса. Объёмный пакет под задачи правообладателя.</div>
+        <ul>
+          <li>Пакет ссылок на год</li>
+          <li>Персональный менеджер</li>
+          <li>Интеграция по API</li>
+          <li>Юридическое сопровождение</li>
+        </ul>
+      </div>
+
+      <div class="tariff">
+        <div class="t-name">Под ключ · LinkRepear</div>
+        <div class="price">85 000 ₽ <small>/ год за книгу</small></div>
+        <div class="t-desc">Для физлиц. Каждая следующая книга в течение года — 30 000 ₽.</div>
+        <ul>
+          <li>Полное сопровождение книги</li>
+          <li>Программа LinkRepear</li>
+          <li>Первая книга — 85 000 ₽/год</li>
+          <li>Каждая следующая — 30 000 ₽</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- DIAGRAM -->
+<section>
+  <div class="container">
+    <h2>Распределение дохода</h2>
+    <p class="section-sub">Партнёрская схема: 50% выручки направляется компании «Старградд».</p>
+    <div class="diagram-wrap">
+      <div class="donut-box">
+        <div class="donut">
+          <div class="donut-center">
+            <b>50 / 50</b>
+            <small>распределение</small>
+          </div>
+        </div>
+      </div>
+      <div class="legend">
+        <div class="legend-item">
+          <div class="dot blue"></div>
+          <div>
+            <b>50% — «Старградд»</b>
+            <p>Партнёрская доля компании за инфраструктуру, юридическую поддержку и продвижение.</p>
+          </div>
+        </div>
+        <div class="legend-item">
+          <div class="dot purple"></div>
+          <div>
+            <b>50% — Антикопия 2.0</b>
+            <p>Операционная доля проекта: разработка, поддержка, зарплаты, развитие продукта.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="diagram-note">
+      <b>Сноска:</b> 30% от общего дохода закреплено за руководителем отдела — эта доля
+      выделяется внутри 50% Антикопии 2.0.
+    </div>
+  </div>
+</section>
+
+<!-- CALCULATOR: СТАТИЧНЫЙ БАЗОВЫЙ РАСЧЁТ -->
+<section>
+  <div class="container">
+    <h2>Доход — базовый расчёт</h2>
+    <p class="section-sub">Типовая нагрузка: 20 книг «под ключ», 40 доп. книг, 30 клиентов на «Поиск+», 2 000 ссылок в месяц, 3 партнёра по 300 000 ₽.</p>
+
+    <div class="calc">
+      <div class="results">
+        <div class="res-card yellow">
+          <small>Тариф «Под ключ» / год</small>
+          <b>2 900 000 ₽</b>
+          <div class="res-note">20 × 85 000 + 40 × 30 000</div>
+        </div>
+        <div class="res-card blue">
+          <small>Тариф «Поиск+» / год</small>
+          <b>720 000 ₽</b>
+          <div class="res-note">30 × 2 000 × 12</div>
+        </div>
+        <div class="res-card">
+          <small>Оплата за ссылки / год</small>
+          <b>3 600 000 ₽</b>
+          <div class="res-note">2 000 × 150 × 12</div>
+        </div>
+        <div class="res-card purple">
+          <small>Партнёрский тариф / год</small>
+          <b>900 000 ₽</b>
+          <div class="res-note">3 × 300 000</div>
+        </div>
+      </div>
+
+      <div class="total-bar">
+        <span>Итого выручка за год</span>
+        <b>8 120 000 ₽</b>
+      </div>
+      <div class="results" style="margin-top:16px">
+        <div class="res-card green">
+          <small>Доля «Старградд» (50%)</small>
+          <b>4 060 000 ₽</b>
+        </div>
+        <div class="res-card blue">
+          <small>Доля Антикопии 2.0 (50%)</small>
+          <b>4 060 000 ₽</b>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CALCULATOR: ИНТЕРАКТИВНЫЙ -->
+<section>
+  <div class="container">
+    <h2>Калькулятор дохода</h2>
+    <p class="section-sub">Если JavaScript доступен — можно менять значения и видеть результат в реальном времени. На iPhone при открытии файла из «Файлов» Safari может блокировать скрипты: тогда пользуйтесь базовым расчётом выше.</p>
+
+    <div class="calc">
+      <div class="calc-grid">
+        <div class="field">
+          <label for="booksFirst">Книг на тарифе «Под ключ» (первая книга)</label>
+          <input type="number" id="booksFirst" value="20" min="0" step="1" inputmode="numeric" pattern="[0-9]*">
+        </div>
+        <div class="field">
+          <label for="booksExtra">Доп. книг на тариф «Под ключ»</label>
+          <input type="number" id="booksExtra" value="40" min="0" step="1" inputmode="numeric" pattern="[0-9]*">
+        </div>
+        <div class="field">
+          <label for="monthlyClients">Клиентов на тарифе «Поиск+»</label>
+          <input type="number" id="monthlyClients" value="30" min="0" step="1" inputmode="numeric" pattern="[0-9]*">
+        </div>
+        <div class="field">
+          <label for="links">Уничтоженных ссылок в месяц (всего)</label>
+          <input type="number" id="links" value="2000" min="0" step="1" inputmode="numeric" pattern="[0-9]*">
+        </div>
+        <div class="field">
+          <label for="partnerAvg">Партнёрский тариф (средний чек в год)</label>
+          <select id="partnerAvg">
+            <option value="200000">200 000 ₽</option>
+            <option value="300000" selected>300 000 ₽</option>
+            <option value="400000">400 000 ₽</option>
+            <option value="500000">500 000 ₽</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="partnerClients">Партнёрских клиентов (юрлиц)</label>
+          <input type="number" id="partnerClients" value="3" min="0" step="1" inputmode="numeric" pattern="[0-9]*">
+        </div>
+      </div>
+
+      <div class="results">
+        <div class="res-card yellow">
+          <small>Тариф «Под ключ» / год</small>
+          <b id="resKey">0 ₽</b>
+          <div class="res-note">первая книга 85 000 + доп. по 30 000</div>
+        </div>
+        <div class="res-card blue">
+          <small>Тариф «Поиск+» / год</small>
+          <b id="resMonthly">0 ₽</b>
+          <div class="res-note">2 000 ₽ × клиентов × 12</div>
+        </div>
+        <div class="res-card">
+          <small>Оплата за ссылки / год</small>
+          <b id="resLinks">0 ₽</b>
+          <div class="res-note">~150 ₽ за уничтожение</div>
+        </div>
+        <div class="res-card purple">
+          <small>Партнёрский тариф / год</small>
+          <b id="resPartner">0 ₽</b>
+          <div class="res-note">средний чек × клиентов</div>
+        </div>
+      </div>
+
+      <div class="total-bar">
+        <span>Итого выручка за год</span>
+        <b id="resTotal">0 ₽</b>
+      </div>
+      <div class="results" style="margin-top:16px">
+        <div class="res-card green">
+          <small>Доля «Старградд» (50%)</small>
+          <b id="resStar">0 ₽</b>
+        </div>
+        <div class="res-card blue">
+          <small>Доля Антикопии 2.0 (50%)</small>
+          <b id="resAnti">0 ₽</b>
+        </div>
+      </div>
+      <div class="results" style="margin-top:16px">
+        <div class="res-card green">
+          <small>Из них руководителю отдела (30% от общей выручки)</small>
+          <b id="resHead">0 ₽</b>
+        </div>
+        <div class="res-card blue">
+          <small>Остаётся в Антикопии 2.0</small>
+          <b id="resAntiRest">0 ₽</b>
+        </div>
+      </div>
+
+      <div class="static-note" id="jsNote">
+        Если вы видите здесь нули и цифры не меняются при вводе — значит Safari заблокировал
+        JavaScript. Базовый расчёт выше всегда доступен.
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    Антикопия 2.0 · дорожная карта проекта · партнёр — «Старградд» · 2026
+  </div>
+</footer>
+
+<script src="calc.js" defer></script>
+</body>
+</html>
